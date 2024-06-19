@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wality_application/utils/navigator_utils.dart';
+import 'package:wality_application/wality_app/utils/navigator_utils.dart';
 import 'package:wality_application/wality_app/views/nav_bar/custom_bottom_navbar.dart';
 import 'package:wality_application/wality_app/views/nav_bar/floating_action_button.dart';
 import 'package:wality_application/wality_app/views_models/profile_vm.dart';
@@ -70,7 +70,7 @@ class ProfilePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  profilevm.username!,
+                                  "John Doe",
                                   style: const TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
@@ -183,12 +183,7 @@ class ProfilePage extends StatelessWidget {
                           SizedBox(
                             height: 12,
                           ),
-                          profilevm.buildProfileOption(
-                            context,
-                            icon: Icons.logout,
-                            title: 'Logout',
-                            onTap: () => LogOutToOutsite(context),
-                          ),
+                          
                         ],
                       ),
                     ),

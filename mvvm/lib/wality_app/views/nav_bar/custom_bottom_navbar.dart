@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wality_application/utils/navigator_utils.dart';
+import 'package:wality_application/wality_app/utils/navigator_utils.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final String currentPage;

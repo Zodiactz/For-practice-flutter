@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wality_application/utils/navigator_utils.dart';
+import 'package:wality_application/wality_app/utils/my_text_form_field.dart';
+import 'package:wality_application/wality_app/utils/navigator_utils.dart';
 import 'package:wality_application/wality_app/views_models/sign_up_vm.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -94,65 +95,45 @@ class SignUpPage extends StatelessWidget {
                         SizedBox(
                           height: 50.0,
                           width: 300.0,
-                          child: TextFormField(
-                            focusNode: signupvm.usernameFocusNode,
+                          child: MyTextFormField(
                             controller: signupvm.usernameController,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(16),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(24),
-                                borderSide: BorderSide.none,
-                              ),
-                              hintText: 'Username',
-                              filled: true,
-                              fillColor: Colors.white,
-                            ),
+                            hintText: "Username",
+                            obscureText: false,
+                            focusNode: signupvm.usernameFocusNode,
+                            errorMessage: signupvm.usernameError,
                           ),
                         ),
-                        const SizedBox(height: 20),
+                         const SizedBox(height: 20),
                         SizedBox(
                           height: 50.0,
                           width: 300.0,
-                          child: TextFormField(
-                            focusNode: signupvm.emailFocusNode,
+                          child: MyTextFormField(
                             controller: signupvm.emailController,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(16),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(24),
-                                borderSide: BorderSide.none,
-                              ),
-                              hintText: 'Email',
-                              filled: true,
-                              fillColor: Colors.white,
-                            ),
+                            hintText: "Email",
+                            obscureText: false,
+                            focusNode: signupvm.emailFocusNode,
+                            errorMessage: signupvm.emailError,
                           ),
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 50.0,
                           width: 300.0,
-                          child: TextFormField(
-                            focusNode: signupvm.passwordFocusNode,
+                          child: MyTextFormField(
                             controller: signupvm.passwordController,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(16),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(24),
-                                borderSide: BorderSide.none,
-                              ),
-                              hintText: 'Password',
-                              filled: true,
-                              fillColor: Colors.white,
-                              suffixIcon: IconButton(
-                                  icon: Icon(signupvm.passwordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off),
-                                  onPressed: () {
-                                    signupvm.togglePasswordVisibility();
-                                  }),
-                            ),
+                            hintText: "Password",
                             obscureText: !signupvm.passwordVisible,
+                            focusNode: signupvm.passwordFocusNode,
+                            suffixIcon: IconButton(
+                              icon: Icon(signupvm.passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off),
+                              color: Colors.grey,
+                              onPressed: () {
+                                signupvm.togglePasswordVisibility();
+                              },
+                            ),
+                            errorMessage: signupvm.passwordError,
                           ),
                         ),
                         const SizedBox(height: 28),

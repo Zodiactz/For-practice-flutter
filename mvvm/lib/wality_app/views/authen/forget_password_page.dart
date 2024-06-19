@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wality_application/utils/navigator_utils.dart';
+import 'package:wality_application/wality_app/utils/my_text_form_field.dart';
+import 'package:wality_application/wality_app/utils/navigator_utils.dart';
 import 'package:wality_application/wality_app/views_models/forget_password_vm.dart';
 
 class ForgetpasswordPage extends StatefulWidget {
@@ -98,40 +99,27 @@ class _ForgetpasswordPageState extends State<ForgetpasswordPage> {
                             child: Column(
                               children: [
                                 SizedBox(
-                                  height: 50.0,
-                                  width: 300.0,
-                                  child: TextFormField(
-                                    controller: forgetpassvm.emailController,
-                                    decoration: InputDecoration(
-                                      contentPadding: const EdgeInsets.all(16),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(24),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                      hintText: 'Email',
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                    ),
-                                  ),
-                                ),
+                              height: 50.0,
+                              width: 300.0,
+                              child: MyTextFormField(
+                                controller: forgetpassvm.emailController,
+                                hintText: "Email",
+                                obscureText: false,
+                                focusNode: forgetpassvm.emailFocusNode,
+                                errorMessage: forgetpassvm.emailError,
+                              ),
+                            ),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 50.0,
                                   width: 300.0,
-                                  child: TextFormField(
-                                    controller:
-                                        forgetpassvm.confirmEmailController,
-                                    decoration: InputDecoration(
-                                      contentPadding: const EdgeInsets.all(16),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(24),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                      hintText: 'Confirm Email',
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                    ),
-                                  ),
+                                  child: MyTextFormField(
+                                controller: forgetpassvm.emailController,
+                                hintText: "Confirm Email",
+                                obscureText: false,
+                                focusNode: forgetpassvm.emailFocusNode,
+                                errorMessage: forgetpassvm.emailError,
+                              ),
                                 ),
                               ],
                             ),

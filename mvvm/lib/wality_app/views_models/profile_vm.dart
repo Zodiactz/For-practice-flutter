@@ -1,29 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:wality_application/wality_app/services/firebase_auth_service.dart';
-import 'package:wality_application/wality_app/models/user.dart';
 
 class ProfileViewModel extends ChangeNotifier {
-  final FireBaseAuthService _authService = FireBaseAuthService();
-  final currentUser = FirebaseAuth.instance.currentUser;
-  String username =
-      FirebaseAuth.instance.currentUser?.displayName ?? "UserName";
 
-  Future<void> signOut() async {
-    await _authService.signOut();
-    notifyListeners();
-  }
+  
+      
 
 
-  getUserInfo(){
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    FirebaseFirestore.instance.collection('users').doc(uid).snapshots().listen((event) {
-    
-      notifyListeners();
-    });
-  }
+
 
   Divider buildDivider() {
     return const Divider(

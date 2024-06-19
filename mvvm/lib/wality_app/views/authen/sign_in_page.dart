@@ -1,7 +1,8 @@
 // views/sign_in_page.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wality_application/utils/navigator_utils.dart';
+import 'package:wality_application/wality_app/utils/my_text_form_field.dart';
+import 'package:wality_application/wality_app/utils/navigator_utils.dart';
 import 'package:wality_application/wality_app/views_models/sign_in_vm.dart';
 
 class SignInPage extends StatelessWidget {
@@ -101,46 +102,33 @@ class SignInPage extends StatelessWidget {
                             SizedBox(
                               height: 50.0,
                               width: 300.0,
-                              child: TextFormField(
-                                focusNode: signinvm.emailFocusNode,
+                              child: MyTextFormField(
                                 controller: signinvm.emailController,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.all(16),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(24),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  hintText: 'Email',
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                ),
+                                hintText: "Email",
+                                obscureText: false,
+                                focusNode: signinvm.emailFocusNode,
+                                errorMessage: signinvm.emailError,
                               ),
                             ),
                             const SizedBox(height: 20),
                             SizedBox(
                               height: 50.0,
                               width: 300.0,
-                              child: TextFormField(
-                                focusNode: signinvm.passwordFocusNode,
+                              child: MyTextFormField(
                                 controller: signinvm.passwordController,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.all(16),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(24),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  hintText: 'Password',
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  suffixIcon: IconButton(
-                                      icon: Icon(signinvm.passwordVisible
-                                          ? Icons.visibility
-                                          : Icons.visibility_off),
-                                      onPressed: () {
-                                        signinvm.togglePasswordVisibility();
-                                      }),
-                                ),
+                                hintText: "Password",
                                 obscureText: !signinvm.passwordVisible,
+                                focusNode: signinvm.passwordFocusNode,
+                                suffixIcon: IconButton(
+                                  icon: Icon(signinvm.passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  color: Colors.grey,
+                                  onPressed: () {
+                                    signinvm.togglePasswordVisibility();
+                                  },
+                                ),
+                                errorMessage: signinvm.passwordError,
                               ),
                             ),
                             const SizedBox(height: 28),

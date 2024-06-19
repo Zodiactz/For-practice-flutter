@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0),
                         child: Text(
-                          "n",
+                          "John Doe",
                           //'Hello! ${uservm.user.name}',
                           style: const TextStyle(
                             fontSize: 36,

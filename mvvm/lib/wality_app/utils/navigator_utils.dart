@@ -49,14 +49,18 @@ void openWaterCheckingPage(BuildContext context) async {
   }
 }
 
-void openSettingPage(BuildContext context) async {
-  Navigator.pushNamed(context, '/settingpage');
+void openChangeInfoPage(BuildContext context) async {
+  Navigator.pushNamed(context, '/changeinfopage');
 }
 
 void LogOutToOutsite(BuildContext context) async {
   final profilevm = Provider.of<ProfileViewModel>(context, listen: false);
-  await profilevm.signOut();
+  //await profilevm.signOut();
   Navigator.of(context).pushReplacementNamed('/logopage');
+}
+
+void openSettingPage(BuildContext context) async {
+  Navigator.pushNamed(context, '/settingpage');
 }
 
 void GoBack(BuildContext context) async {
