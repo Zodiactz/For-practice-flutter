@@ -58,7 +58,7 @@ class SettingPage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height - 150,
                   decoration: const BoxDecoration(
-                    color: Color(0xFFD9D9D9),
+                    color: Colors.white,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
@@ -74,11 +74,11 @@ class SettingPage extends StatelessWidget {
                           title: 'Change Username and Password',
                           onTap: () => openChangeInfoPage(context),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 12,
                         ),
                         profilevm.buildDivider(),
-                        SizedBox(
+                        const SizedBox(
                           height: 12,
                         ),
                         profilevm.buildProfileOption(
@@ -87,7 +87,7 @@ class SettingPage extends StatelessWidget {
                           title: 'Log out',
                           onTap: () => LogOutToOutsite(context),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 12,
                         ),
                         profilevm.buildDivider(),

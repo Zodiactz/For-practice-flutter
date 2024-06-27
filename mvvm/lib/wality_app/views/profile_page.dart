@@ -6,7 +6,7 @@ import 'package:wality_application/wality_app/views/nav_bar/floating_action_butt
 import 'package:wality_application/wality_app/views_models/profile_vm.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -69,17 +69,17 @@ class ProfilePage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   "John Doe",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'RobotoCondensed',
                                   ),
                                 ),
-                                Text(
+                                const Text(
                                   "UID: 999",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 24,
                                     fontFamily: 'RobotoCondensed',
                                   ),
@@ -137,24 +137,24 @@ class ProfilePage extends StatelessWidget {
                             title: 'Purchase Requisition History',
                             onTap: () => openSettingPage(context),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 12,
                           ),
                           profilevm.buildDivider(),
-                          SizedBox(
+                          const SizedBox(
                             height: 12,
                           ),
                           profilevm.buildProfileOption(
                             context,
                             icon: Icons.bar_chart,
                             title: 'Summary Graph',
-                            onTap: () => openSettingPage(context),
+                            onTap: () => openSummaryGraphPage(context),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 12,
                           ),
                           profilevm.buildDivider(),
-                          SizedBox(
+                          const SizedBox(
                             height: 12,
                           ),
                           profilevm.buildProfileOption(
@@ -163,11 +163,11 @@ class ProfilePage extends StatelessWidget {
                             title: 'Payment',
                             onTap: () => openSettingPage(context),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 12,
                           ),
                           profilevm.buildDivider(),
-                          SizedBox(
+                          const SizedBox(
                             height: 12,
                           ),
                           profilevm.buildProfileOption(
@@ -176,11 +176,11 @@ class ProfilePage extends StatelessWidget {
                             title: 'Setting',
                             onTap: () => openSettingPage(context),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 12,
                           ),
                           profilevm.buildDivider(),
-                          SizedBox(
+                          const SizedBox(
                             height: 12,
                           ),
                           
@@ -195,8 +195,8 @@ class ProfilePage extends StatelessWidget {
         ),
         floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: Padding(
-                padding: const EdgeInsets.only(top: 12),
+            floatingActionButton: const Padding(
+                padding: EdgeInsets.only(top: 12),
                 child: CustomFloatingActionButton()),
         bottomNavigationBar:
             const CustomBottomNavBar(currentPage: 'ProfilePage.dart'),

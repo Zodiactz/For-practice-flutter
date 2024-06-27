@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MyTextFormField extends StatelessWidget {
+class TextFormFieldAuthen extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final bool obscureText;
@@ -9,9 +9,10 @@ class MyTextFormField extends StatelessWidget {
   final String? errorMessage;
   final FocusNode focusNode;
   final double height;
+  final onfieldSubmitted;
 
-  const MyTextFormField({
-    Key? key,
+  const TextFormFieldAuthen({
+    super.key,
     required this.controller,
     required this.hintText,
     required this.obscureText,
@@ -19,8 +20,9 @@ class MyTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.errorMessage,
     required this.focusNode,
-    this.height =  40.0, // Default height value
-  }) : super(key: key);
+    this.height =  40.0,
+    this.onfieldSubmitted,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,7 @@ class MyTextFormField extends StatelessWidget {
             prefixIcon: prefixIcon,
           ),
           focusNode: focusNode,
+          onFieldSubmitted: onfieldSubmitted,
         ),
       
     );

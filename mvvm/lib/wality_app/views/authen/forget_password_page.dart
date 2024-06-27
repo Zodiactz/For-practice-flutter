@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wality_application/wality_app/utils/my_text_form_field.dart';
+import 'package:wality_application/wality_app/utils/text_form_field_authen.dart';
 import 'package:wality_application/wality_app/utils/navigator_utils.dart';
-import 'package:wality_application/wality_app/views_models/forget_password_vm.dart';
+import 'package:wality_application/wality_app/views_models/authentication_vm.dart';
 
 class ForgetpasswordPage extends StatefulWidget {
   const ForgetpasswordPage({super.key});
@@ -12,10 +12,57 @@ class ForgetpasswordPage extends StatefulWidget {
 }
 
 class _ForgetpasswordPageState extends State<ForgetpasswordPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController confirmEmailController = TextEditingController();
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode confirmEmailFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<ForgetpasswordViewModel>(
-        builder: (context, forgetpassvm, child) {
+    String? emailError;
+    String? confirmEmailError;
+
+     void showErrorSnackBar(AuthenticationViewModel authenvm) {
+      authenvm.validateAllForgetPassword(
+        emailController.text,
+        confirmEmailController.text,);
+
+      if (authenvm.allError != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(authenvm.allError!)),
+        );
+      } else if (authenvm.emailError != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(authenvm.emailError!)),
+        );
+      } else if (authenvm.confirmEmailError != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(authenvm.confirmEmailError!)),
+        );
+      }
+    }
+
+    void confirmEmail(AuthenticationViewModel authenvm) async {
+      if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+        bool isValidForConfirmEmail = await authenvm.validateAllForgetPassword(
+          emailController.text,
+          confirmEmailController.text,
+        );
+
+        if (isValidForConfirmEmail) {
+          Navigator.pushNamed(context, '/choosewaypage');
+        } else {
+          showErrorSnackBar(authenvm);
+        }
+      } else {
+        showErrorSnackBar(authenvm);
+      }
+    }
+
+    return Consumer<AuthenticationViewModel>(
+        builder: (context, authenvm, child) {
       return Scaffold(
         body: SingleChildScrollView(
           reverse: true,
@@ -90,63 +137,66 @@ class _ForgetpasswordPageState extends State<ForgetpasswordPage> {
                         ),
                       ],
                     ),
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(height: 8),
-                          SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                SizedBox(
-                              height: 50.0,
-                              width: 300.0,
-                              child: MyTextFormField(
-                                controller: forgetpassvm.emailController,
-                                hintText: "Email",
-                                obscureText: false,
-                                focusNode: forgetpassvm.emailFocusNode,
-                                errorMessage: forgetpassvm.emailError,
+                    Form(
+                      key: _formKey,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 8),
+                            SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 50.0,
+                                    width: 300.0,
+                                    child: TextFormFieldAuthen(
+                                      controller: emailController,
+                                      hintText: "Email",
+                                      obscureText: false,
+                                      focusNode: emailFocusNode,
+                                      errorMessage:emailError,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 50.0,
+                                    width: 300.0,
+                                    child: TextFormFieldAuthen(
+                                      controller: confirmEmailController,
+                                      hintText: "Confirm Email",
+                                      obscureText: false,
+                                      focusNode: confirmEmailFocusNode,
+                                      errorMessage: confirmEmailError,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                                const SizedBox(height: 20),
-                                SizedBox(
-                                  height: 50.0,
-                                  width: 300.0,
-                                  child: MyTextFormField(
-                                controller: forgetpassvm.emailController,
-                                hintText: "Confirm Email",
-                                obscureText: false,
-                                focusNode: forgetpassvm.emailFocusNode,
-                                errorMessage: forgetpassvm.emailError,
-                              ),
+                            const SizedBox(height: 28),
+                            ElevatedButton(
+                              onPressed: () {
+                                confirmEmail(authenvm);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF342056),
+                                fixedSize: const Size(300, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 28),
-                          ElevatedButton(
-                            onPressed: () {
-                              openChoosewayPage(context);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF342056),
-                              fixedSize: const Size(300, 50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
                               ),
-                            ),
-                            child: const Text(
-                              'Confirm',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'RobotoCondensed',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                              child: const Text(
+                                'Confirm',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'RobotoCondensed',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],

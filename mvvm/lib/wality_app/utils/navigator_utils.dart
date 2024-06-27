@@ -36,6 +36,14 @@ void openProfilePage(BuildContext context) async {
   Navigator.pushNamed(context, '/profilepage');
 }
 
+void openSettingPage(BuildContext context) async {
+  Navigator.pushNamed(context, '/settingpage');
+}
+
+void openSummaryGraphPage(BuildContext context) async {
+  Navigator.pushNamed(context, '/summarygraphpage');
+}
+
 void openWaterCheckingPage(BuildContext context) async {
   final ImagePicker picker = ImagePicker();
   final XFile? image = await picker.pickImage(source: ImageSource.camera);
@@ -57,10 +65,6 @@ void LogOutToOutsite(BuildContext context) async {
   final profilevm = Provider.of<ProfileViewModel>(context, listen: false);
   //await profilevm.signOut();
   Navigator.of(context).pushReplacementNamed('/logopage');
-}
-
-void openSettingPage(BuildContext context) async {
-  Navigator.pushNamed(context, '/settingpage');
 }
 
 void GoBack(BuildContext context) async {

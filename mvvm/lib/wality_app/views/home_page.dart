@@ -1,10 +1,7 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wality_application/wality_app/views/nav_bar/floating_action_button.dart';
 import 'package:wality_application/wality_app/views/nav_bar/custom_bottom_navbar.dart';
-import 'package:wality_application/wality_app/views/water_checking_page.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:wality_application/wality_app/views_models/animation_vm.dart';
 import 'package:wality_application/wality_app/views_models/water_save_vm.dart';
 
@@ -50,12 +47,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0),
                         child: Text(
                           "John Doe",
                           //'Hello! ${uservm.user.name}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 36,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -215,8 +212,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ), 
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: Padding(
-                padding: const EdgeInsets.only(top: 12),
+            floatingActionButton: const Padding(
+                padding: EdgeInsets.only(top: 12),
                 child: CustomFloatingActionButton()),
             bottomNavigationBar:
                 const CustomBottomNavBar(currentPage: 'HomePage.dart'),

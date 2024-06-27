@@ -5,7 +5,6 @@ import 'package:wality_application/wality_app/utils/navigator_utils.dart';
 import 'package:wality_application/wality_app/views/nav_bar/floating_action_button.dart';
 import 'package:wality_application/wality_app/views_models/water_checking_vm.dart';
 import 'package:wality_application/wality_app/views/nav_bar/custom_bottom_navbar.dart';
-import 'package:wality_application/wality_app/views/home_page.dart';
 
 class WaterCheckingPage extends StatelessWidget {
   final File image;
@@ -149,8 +148,8 @@ class WaterCheckingPage extends StatelessWidget {
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Padding(
-            padding: const EdgeInsets.only(top: 12),
+        floatingActionButton: const Padding(
+            padding: EdgeInsets.only(top: 12),
             child: CustomFloatingActionButton()),
         bottomNavigationBar:
             const CustomBottomNavBar(currentPage: 'WaterCheckingPage.dart'),

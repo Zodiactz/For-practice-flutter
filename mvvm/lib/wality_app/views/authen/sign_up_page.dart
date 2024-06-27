@@ -1,22 +1,81 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wality_application/wality_app/utils/my_text_form_field.dart';
+import 'package:wality_application/wality_app/utils/text_form_field_authen.dart';
 import 'package:wality_application/wality_app/utils/navigator_utils.dart';
-import 'package:wality_application/wality_app/views_models/sign_up_vm.dart';
+import 'package:wality_application/wality_app/views_models/authentication_vm.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   @override
+  State<SignUpPage> createState() => _authenPageState();
+}
+
+class _authenPageState extends State<SignUpPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final FocusNode usernameFocusNode = FocusNode();
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+
+  @override
   Widget build(BuildContext context) {
-    return Consumer<SignUpViewModel>(builder: (context, signupvm, child) {
+    String? usernameError;
+    String? emailError;
+    String? passwordError;
+
+    void showErrorSnackBar(AuthenticationViewModel authenvm) {
+      authenvm.validateAllSignUp(usernameController.text, emailController.text,
+          passwordController.text);
+
+      if (authenvm.allError != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(authenvm.allError!)),
+        );
+      } else if (authenvm.usernameError != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(authenvm.usernameError!)),
+        );
+      } else if (authenvm.emailError != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(authenvm.emailError!)),
+        );
+      } else if (authenvm.passwordError != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(authenvm.passwordError!)),
+        );
+      }
+    }
+
+    void signUp(AuthenticationViewModel authenvm) async {
+      if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+        bool isValidForSignUp = await authenvm.validateAllSignUp(
+            usernameController.text,
+            emailController.text,
+            passwordController.text);
+
+        if (isValidForSignUp) {
+          Navigator.pushNamed(context, '/homepage');
+        }
+        else {
+          showErrorSnackBar(authenvm);
+        }
+      } else {
+        showErrorSnackBar(authenvm);
+      }
+    }
+
+    return Consumer<AuthenticationViewModel>(
+        builder: (context, authenvm, child) {
       return Scaffold(
           body: Listener(
         onPointerDown: (_) {
           FocusScope.of(context).unfocus();
         },
         child: SingleChildScrollView(
-          physics: signupvm.isScrollable
+          physics: authenvm.isScrollable
               ? const AlwaysScrollableScrollPhysics()
               : const NeverScrollableScrollPhysics(),
           reverse: true,
@@ -89,91 +148,102 @@ class SignUpPage extends StatelessWidget {
                     ],
                   ),
                   Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 50.0,
-                          width: 300.0,
-                          child: MyTextFormField(
-                            controller: signupvm.usernameController,
-                            hintText: "Username",
-                            obscureText: false,
-                            focusNode: signupvm.usernameFocusNode,
-                            errorMessage: signupvm.usernameError,
-                          ),
-                        ),
-                         const SizedBox(height: 20),
-                        SizedBox(
-                          height: 50.0,
-                          width: 300.0,
-                          child: MyTextFormField(
-                            controller: signupvm.emailController,
-                            hintText: "Email",
-                            obscureText: false,
-                            focusNode: signupvm.emailFocusNode,
-                            errorMessage: signupvm.emailError,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          height: 50.0,
-                          width: 300.0,
-                          child: MyTextFormField(
-                            controller: signupvm.passwordController,
-                            hintText: "Password",
-                            obscureText: !signupvm.passwordVisible,
-                            focusNode: signupvm.passwordFocusNode,
-                            suffixIcon: IconButton(
-                              icon: Icon(signupvm.passwordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off),
-                              color: Colors.grey,
-                              onPressed: () {
-                                signupvm.togglePasswordVisibility();
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 50.0,
+                            width: 300.0,
+                            child: TextFormFieldAuthen(
+                              controller: usernameController,
+                              hintText: "Username",
+                              obscureText: false,
+                              focusNode: usernameFocusNode,
+                              errorMessage: usernameError,
+                              onfieldSubmitted: (value) {
+                                FocusScope.of(context)
+                                    .requestFocus(usernameFocusNode);
                               },
                             ),
-                            errorMessage: signupvm.passwordError,
                           ),
-                        ),
-                        const SizedBox(height: 28),
-                        ElevatedButton(
-                          onPressed: () {
-                            signupvm.signUp(context);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF342056),
-                            fixedSize: const Size(300, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            height: 50.0,
+                            width: 300.0,
+                            child: TextFormFieldAuthen(
+                              controller: emailController,
+                              hintText: "Email",
+                              obscureText: false,
+                              focusNode: emailFocusNode,
+                              errorMessage: emailError,
+                              onfieldSubmitted: (value) {
+                                FocusScope.of(context)
+                                    .requestFocus(passwordFocusNode);
+                              },
                             ),
                           ),
-                          child: const Text(
-                            'Sign up',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontFamily: 'RobotoCondensed',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            height: 50.0,
+                            width: 300.0,
+                            child: TextFormFieldAuthen(
+                              controller: passwordController,
+                              hintText: "Password",
+                              obscureText: !authenvm.passwordVisible,
+                              focusNode: passwordFocusNode,
+                              suffixIcon: IconButton(
+                                icon: Icon(authenvm.passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                                color: Colors.grey,
+                                onPressed: () {
+                                  authenvm.togglePasswordVisibility();
+                                },
+                              ),
+                              errorMessage: passwordError,
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 28),
-                        GestureDetector(
-                          onTap: () {
-                            openSignInPage(context);
-                          },
-                          child: const Text(
-                            "Already have an account ?",
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              fontFamily: 'RobotoCondensed',
-                              fontSize: 16,
+                          const SizedBox(height: 28),
+                          ElevatedButton(
+                            onPressed: () {
+                              signUp(authenvm);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF342056),
+                              fixedSize: const Size(300, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: const Text(
+                              'Sign up',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'RobotoCondensed',
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 60),
-                      ],
+                          const SizedBox(height: 28),
+                          GestureDetector(
+                            onTap: () {
+                              openSignInPage(context);
+                            },
+                            child: const Text(
+                              "Already have an account ?",
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                fontFamily: 'RobotoCondensed',
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 60),
+                        ],
+                      ),
                     ),
                   ),
                 ],

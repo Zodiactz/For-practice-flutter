@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 
-class SignUpViewModel extends ChangeNotifier {
+class ChangeInfoViewModel extends ChangeNotifier {
   final TextEditingController usernameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
   final FocusNode usernameFocusNode = FocusNode();
-  final FocusNode emailFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
+  final FocusNode confirmPasswordFocusNode = FocusNode();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String? usernameError;
-  String? emailError;
   String? passwordError;
+  String? confirmPasswordError;
   String? allError;
   bool _isScrollable = false;
   bool _passwordVisible = false;
+  bool _confirmPasswordVisible = false;
   bool _showValidationMessage = false;
 
   bool get isScrollable => _isScrollable;
   bool get passwordVisible => _passwordVisible;
+  bool get confirmPasswordVisible => _confirmPasswordVisible;
   bool get showValidationMessage => _showValidationMessage;
 
-  SignUpViewModel() {
+  ChangeInfoViewModel() {
     usernameFocusNode.addListener(_onFocusChange);
-    emailFocusNode.addListener(_onFocusChange);
     passwordFocusNode.addListener(_onFocusChange);
+    confirmPasswordFocusNode.addListener(_onFocusChange);
   }
 
   void _onFocusChange() {
-    _isScrollable = usernameFocusNode.hasFocus ||
-        emailFocusNode.hasFocus ||
-        passwordFocusNode.hasFocus;
+    _isScrollable = usernameFocusNode.hasFocus || passwordFocusNode.hasFocus || confirmPasswordFocusNode.hasFocus;
     notifyListeners();
   }
 
@@ -38,17 +38,13 @@ class SignUpViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  String? validateUsername(String? value) {
-    return (value == null || value.isEmpty) ? 'Username is required.' : null;
+  void toggleConfirmPasswordVisibility() {
+    _confirmPasswordVisible = !_confirmPasswordVisible;
+    notifyListeners();
   }
 
-  String? validateEmail(String? value) {
-    return (value == null || value.isEmpty)
-        ? 'Email is required.'
-        : (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                .hasMatch(value))
-            ? 'Enter a valid email'
-            : null;
+  String? validateUsername(String? value) {
+    return (value == null || value.isEmpty) ? 'Username is required.' : null;
   }
 
   String? validatePassword(String? value) {
@@ -60,31 +56,29 @@ class SignUpViewModel extends ChangeNotifier {
             : null;
   }
 
+  String? validateConfirmPassword(String? value) {
+    return (value == null || value.isEmpty)
+        ? 'Confirm Password is required.'
+        : (value != passwordController.text)
+            ? 'Password does not match'
+            : null;
+  }
+
   void validationAll() {
-    String usernameVal = usernameController.text;
-    String emailVal = emailController.text;
-    String passwordVal = passwordController.text;
-
     usernameError = validateUsername(usernameController.text);
-    emailError = validateEmail(emailController.text);
     passwordError = validatePassword(passwordController.text);
+    confirmPasswordError = validateConfirmPassword(confirmPasswordController.text);
 
-    (usernameVal.isEmpty && emailVal.isEmpty && passwordVal.isEmpty)
-        ? allError = 'Username, Email and Password are required'
-        : allError = null;
-
-    _showValidationMessage = usernameError != null ||
-        emailError != null ||
-        passwordError != null ||
-        allError != null;
+    _showValidationMessage =
+        usernameError != null || passwordError != null || confirmPasswordError != null || allError != null;
 
     notifyListeners();
   }
 
-  void signUp(BuildContext context) {
+  void changeInfo(BuildContext context) {
     final currentState = formKey.currentState;
     if (currentState != null && currentState.validate()) {
-      Navigator.pushNamed(context, '/homepage');
+      Navigator.pushNamed(context, '/profilepage');
     } else {
       validationAll();
       if (allError != null) {
@@ -95,13 +89,13 @@ class SignUpViewModel extends ChangeNotifier {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(usernameError!)),
         );
-      } else if (emailError != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(emailError!)),
-        );
       } else if (passwordError != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(passwordError!)),
+        );
+      } else if (confirmPasswordError != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(confirmPasswordError!)),
         );
       }
     }
